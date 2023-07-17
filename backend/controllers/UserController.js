@@ -4,6 +4,7 @@ module.exports.addToLikedMovies = async (req, res) => {
   try {
     const { email, data } = req.body;
     const user = await User.findOne({ email });
+    if (user) {
       const { likedMovies } = user;
       const movieAlreadyLiked = likedMovies.find(({ id }) => id === data.id);
       if (!movieAlreadyLiked) {
@@ -15,6 +16,7 @@ module.exports.addToLikedMovies = async (req, res) => {
           { new: true }
         );
       } else return res.json({ msg: "Movie already added to the liked list." });
+    } else awaitUser.create({ email, likedMovies: [data] });
     return res.json({ msg: "Movie successfully added to liked list." });
   } catch (error) {
     // console.log(error)
